@@ -1,0 +1,79 @@
+<%- include('layouts/header') %>
+<%- include('layouts/sidebar') %>
+
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Quản lý Bài viết</h1>
+        </div>
+        <div class="col-sm-6 text-end">
+          <a href="/admin/posts/add" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm bài viết mới
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Danh sách bài viết</h3>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered table-hover" id="postsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tiêu đề</th>
+                <th>Danh mục</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% posts.forEach(post => { %>
+              <tr>
+                <td><%= post.id %></td>
+                <td><%= post.title %></td>
+                <td><%= post.category_name || 'Chưa phân loại' %></td>
+                <td>
+                  <span class="badge bg-<%= post.status === 'published' ? 'success' : 'warning' %>">
+                    <%= post.status === 'published' ? 'Đã đăng' : 'Bản nháp' %>
+                  </span>
+                </td>
+                <td><%= new Date(post.created_at).toLocaleDateString('vi-VN') %></td>
+                <td>
+                  <a href="/admin/posts/edit/<%= post.id %>" class="btn btn-sm btn-warning">
+                    <i class="fas fa-edit"></i> Sửa
+                  </a>
+                  <a href="/admin/posts/delete/<%= post.id %>" 
+                     class="btn btn-sm btn-danger"
+                     onclick="return confirm('Bạn có chắc muốn xóa bài viết này?')">
+                    <i class="fas fa-trash"></i> Xóa
+                  </a>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('layouts/footer') %>
+
+<!-- Optional: Thêm DataTables cho phân trang, tìm kiếm đẹp hơn -->
+<script>
+  $(document).ready(function() {
+    $('#postsTable').DataTable({
+      "language": { "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/vi.json" }
+    });
+  });
+</script>

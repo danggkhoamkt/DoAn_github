@@ -1,0 +1,54 @@
+<%- include('layouts/header') %>
+<%- include('layouts/sidebar') %>
+
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <h1 class="m-0">Quản lý Người dùng</h1>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-body">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Vai trò</th>
+                <th>Ngày tạo</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% users.forEach(user => { %>
+              <tr>
+                <td><%= user.id %></td>
+                <td><%= user.username %></td>
+                <td><%= user.full_name || '' %></td>
+                <td><%= user.email %></td>
+                <td><span class="badge bg-<%= user.role === 'admin' ? 'danger' : 'info' %>"><%= user.role %></span></td>
+                <td><%= new Date(user.created_at).toLocaleDateString('vi-VN') %></td>
+                <td>
+                  <a href="/admin/users/edit/<%= user.id %>" class="btn btn-sm btn-warning">Sửa</a>
+                  <% if (user.id !== 1) { %> <!-- Không cho xóa admin chính -->
+                    <a href="/admin/users/delete/<%= user.id %>" 
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Xóa người dùng này?')">Xóa</a>
+                  <% } %>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('layouts/footer') %>

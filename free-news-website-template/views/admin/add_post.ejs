@@ -1,0 +1,85 @@
+<%- include('layouts/header') %>
+<%- include('layouts/sidebar') %>
+
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <h1 class="m-0"><%= post ? 'Sửa bài viết' : 'Thêm bài viết mới' %></h1>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-body">
+          <form action="<%= post ? '/admin/posts/update/' + post.id : '/admin/posts/store' %>" 
+                method="POST" enctype="multipart/form-data">
+
+            <div class="mb-3">
+              <label class="form-label">Tiêu đề bài viết</label>
+              <input type="text" name="title" class="form-control" 
+                     value="<%= post ? post.title : '' %>" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Danh mục</label>
+              <select name="category_id" class="form-select" required>
+                <option value="">Chọn danh mục</option>
+                <% categories.forEach(cat => { %>
+                  <option value="<%= cat.id %>" 
+                    <%= post && post.category_id == cat.id ? 'selected' : '' %>>
+                    <%= cat.name %>
+                  </option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Nội dung bài viết</label>
+              <textarea name="content" id="content" class="form-control" rows="15">
+                <%= post ? post.content : '' %>
+              </textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Hình ảnh đại diện</label>
+              <input type="file" name="image" class="form-control" accept="image/*">
+              <% if (post && post.image) { %>
+                <div class="mt-2">
+                  <img src="/uploads/<%= post.image %>" alt="Current" style="max-height: 150px;">
+                </div>
+              <% } %>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Trạng thái</label>
+              <select name="status" class="form-select">
+                <option value="draft" <%= post && post.status === 'draft' ? 'selected' : '' %>>Bản nháp</option>
+                <option value="published" <%= post && post.status === 'published' ? 'selected' : '' %>>Đã đăng</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-success">
+              <%= post ? 'Cập nhật bài viết' : 'Đăng bài viết' %>
+            </button>
+            <a href="/admin/posts" class="btn btn-secondary">Hủy</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('layouts/footer') %>
+
+<!-- TinyMCE hoặc CKEditor (khuyến nghị TinyMCE miễn phí) -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: '#content',
+    height: 500,
+    language: 'vi',
+    plugins: 'lists link image table code',
+    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | table | code'
+  });
+</script>

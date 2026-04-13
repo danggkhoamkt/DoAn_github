@@ -1,0 +1,74 @@
+<%- include('layouts/header') %>
+<%- include('layouts/sidebar') %>
+
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6"><h1>Danh mục bài viết</h1></div>
+        <div class="col-sm-6 text-end">
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+            <i class="fas fa-plus"></i> Thêm danh mục
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-body">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tên danh mục</th>
+                <th>Slug</th>
+                <th>Mô tả</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% categories.forEach(cat => { %>
+              <tr>
+                <td><%= cat.id %></td>
+                <td><%= cat.name %></td>
+                <td><%= cat.slug %></td>
+                <td><%= cat.description || '' %></td>
+                <td>
+                  <a href="/admin/categories/edit/<%= cat.id %>" class="btn btn-sm btn-warning">Sửa</a>
+                  <a href="/admin/categories/delete/<%= cat.id %>" 
+                     class="btn btn-sm btn-danger"
+                     onclick="return confirm('Xóa danh mục này? (Bài viết sẽ mất danh mục)')">Xóa</a>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Modal thêm danh mục đơn giản -->
+<div class="modal fade" id="addCategoryModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="/admin/categories/store" method="POST">
+        <div class="modal-header"><h5>Thêm danh mục mới</h5></div>
+        <div class="modal-body">
+          <div class="mb-3"><input type="text" name="name" class="form-control" placeholder="Tên danh mục" required></div>
+          <div class="mb-3"><input type="text" name="slug" class="form-control" placeholder="Slug (tự động nếu để trống)"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('layouts/footer') %>

@@ -1,0 +1,29 @@
+<%- include('header') %>
+<%- include('sidebar') %>
+
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <h1 class="m-0">Dashboard</h1>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-info">
+            <div class="inner">
+              <h3><%= totalPosts || 0 %></h3>
+              <p>Bài viết</p>
+            </div>
+            <div class="icon"><i class="fas fa-newspaper"></i></div>
+          </div>
+        </div>
+        <!-- Thêm các box khác: Danh mục, Users... -->
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('footer') %>
